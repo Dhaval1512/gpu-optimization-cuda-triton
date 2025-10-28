@@ -1,0 +1,2 @@
+experiment_name,device,dataset,num_epochs,batch_size,lr,fp16,best_accuracy_pct,avg_epoch_time_sec,avg_throughput_images_per_sec,peak_gpu_memory_MB,model_path
+baseline,cuda:NVIDIA A16,MNIST,10,128,0.001,False,99.2,4.44,13505.95,124.14,baseline_cnn_mnist/saved_model/baseline_cnn_model.pth
