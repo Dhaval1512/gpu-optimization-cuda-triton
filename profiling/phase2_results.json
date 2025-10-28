@@ -1,0 +1,90 @@
+[
+  {
+    "op": "layernorm",
+    "impl": "cuda",
+    "batch": 256,
+    "cols": 784,
+    "iters": 200,
+    "avg_ms_per_iter": 1.8124,
+    "device": "NVIDIA A16",
+    "nsys_report": "profiling/nsight/layernorm_cuda.qdrep",
+    "ncu_report": "profiling/nsight/layernorm_cuda.ncu-rep"
+  },
+  {
+    "op": "layernorm",
+    "impl": "triton",
+    "batch": 256,
+    "cols": 784,
+    "iters": 200,
+    "avg_ms_per_iter": 0.0577,
+    "device": "NVIDIA A16",
+    "nsys_report": "profiling/nsight/layernorm_triton.qdrep",
+    "ncu_report": "profiling/nsight/layernorm_triton.ncu-rep"
+  },
+  {
+    "op": "gelu",
+    "impl": "cuda",
+    "batch": 256,
+    "cols": 784,
+    "iters": 200,
+    "avg_ms_per_iter": 1.3006,
+    "device": "NVIDIA A16",
+    "nsys_report": "profiling/nsight/gelu_cuda.qdrep",
+    "ncu_report": "profiling/nsight/gelu_cuda.ncu-rep"
+  },
+  {
+    "op": "gelu",
+    "impl": "triton",
+    "batch": 256,
+    "cols": 784,
+    "iters": 200,
+    "avg_ms_per_iter": 0.0977,
+    "device": "NVIDIA A16",
+    "nsys_report": "profiling/nsight/gelu_triton.qdrep",
+    "ncu_report": "profiling/nsight/gelu_triton.ncu-rep"
+  },
+  {
+    "op": "swish",
+    "impl": "cuda",
+    "batch": 256,
+    "cols": 784,
+    "iters": 200,
+    "avg_ms_per_iter": 1.26,
+    "device": "NVIDIA A16",
+    "nsys_report": "profiling/nsight/swish_cuda.qdrep",
+    "ncu_report": "profiling/nsight/swish_cuda.ncu-rep"
+  },
+  {
+    "op": "swish",
+    "impl": "triton",
+    "batch": 256,
+    "cols": 784,
+    "iters": 200,
+    "avg_ms_per_iter": 0.0674,
+    "device": "NVIDIA A16",
+    "nsys_report": "profiling/nsight/swish_triton.qdrep",
+    "ncu_report": "profiling/nsight/swish_triton.ncu-rep"
+  },
+  {
+    "op": "ln_gelu",
+    "impl": "cuda",
+    "batch": 256,
+    "cols": 784,
+    "iters": 200,
+    "avg_ms_per_iter": 2.0043,
+    "device": "NVIDIA A16",
+    "nsys_report": "profiling/nsight/ln_gelu_cuda.qdrep",
+    "ncu_report": "profiling/nsight/ln_gelu_cuda.ncu-rep"
+  },
+  {
+    "op": "ln_gelu",
+    "impl": "triton",
+    "batch": 256,
+    "cols": 784,
+    "iters": 200,
+    "avg_ms_per_iter": 0.0883,
+    "device": "NVIDIA A16",
+    "nsys_report": "profiling/nsight/ln_gelu_triton.qdrep",
+    "ncu_report": "profiling/nsight/ln_gelu_triton.ncu-rep"
+  }
+]
