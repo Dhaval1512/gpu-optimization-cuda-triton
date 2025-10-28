@@ -1,0 +1,7 @@
+{
+  "device": "NVIDIA A16",
+  "num_epochs": 5,
+  "avg_epoch_time_sec": 11.16,
+  "avg_throughput_images_per_sec": 4481.73,
+  "peak_gpu_memory_MB": 81.35
+}
