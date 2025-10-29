@@ -1,5 +1,26 @@
-openpyxl
+# Core ML & GPU
+torch==2.6.0+cu124
+torchvision==0.21.0+cu124
+torchaudio==2.6.0+cu124
+triton==3.0.0; platform_system != "Windows"
+cupy-cuda12x
+pycuda
+numpy
 pandas
-torch
-torchvision
 tqdm
+matplotlib
+seaborn
+psutil
+
+# Data I/O
+openpyxl
+
+# Packaging & build
+setuptools
+wheel
+
+# Optional utilities
+jupyter
+notebook
+
+# Note: Nsight Systems / Nsight Compute should be installed via NVIDIA SDK, not pip.
