@@ -1,4 +1,4 @@
-📘 GPU Optimization of Deep Learning Kernels using CUDA and Triton
+📘CUDA and OpenAI Triton Framwork Implementation
 A Research-Driven Performance Analysis of Custom GPU Operators Integrated into a CNN Model (MNIST)
 
 University of Windsor — School of Computer Science (2025)
