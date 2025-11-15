@@ -1,9 +1,0 @@
-op,impl,batch,cols,iters,avg_ms_per_iter,device,nsys_report,ncu_report
-layernorm,cuda,256,784,200,1.8124,NVIDIA A16,profiling/nsight/layernorm_cuda.qdrep,profiling/nsight/layernorm_cuda.ncu-rep
-layernorm,triton,256,784,200,0.0577,NVIDIA A16,profiling/nsight/layernorm_triton.qdrep,profiling/nsight/layernorm_triton.ncu-rep
-gelu,cuda,256,784,200,1.3006,NVIDIA A16,profiling/nsight/gelu_cuda.qdrep,profiling/nsight/gelu_cuda.ncu-rep
-gelu,triton,256,784,200,0.0977,NVIDIA A16,profiling/nsight/gelu_triton.qdrep,profiling/nsight/gelu_triton.ncu-rep
-swish,cuda,256,784,200,1.26,NVIDIA A16,profiling/nsight/swish_cuda.qdrep,profiling/nsight/swish_cuda.ncu-rep
-swish,triton,256,784,200,0.0674,NVIDIA A16,profiling/nsight/swish_triton.qdrep,profiling/nsight/swish_triton.ncu-rep
-ln_gelu,cuda,256,784,200,2.0043,NVIDIA A16,profiling/nsight/ln_gelu_cuda.qdrep,profiling/nsight/ln_gelu_cuda.ncu-rep
-ln_gelu,triton,256,784,200,0.0883,NVIDIA A16,profiling/nsight/ln_gelu_triton.qdrep,profiling/nsight/ln_gelu_triton.ncu-rep
