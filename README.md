@@ -1,5 +1,4 @@
 📘CUDA and OpenAI Triton Framwork Implementation
-A Research-Driven Performance Analysis of Custom GPU Operators Integrated into a CNN Model (MNIST)
 
 University of Windsor — School of Computer Science (2025)
 Project Partner: Jaguar Land Rover Canada
