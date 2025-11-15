@@ -1,9 +1,18 @@
 // cuda_kernels/cuda_ops_all.cu
 
+// Windows compatibility fixes
+#ifdef _WIN32
+#define NOMINMAX
+#pragma warning(disable: 4067)
+#pragma warning(disable: 4624)
+#pragma warning(disable: 4819)
+#endif
+
 #include <torch/extension.h>
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <math.h>
+
 
 namespace {
 
@@ -256,11 +265,105 @@ torch::Tensor fused_ln_gelu_forward(torch::Tensor x,
     return y;
 }
 
-// ================== PyTorch module registration ==================
+// ================== Focal Loss ==================
+
+__global__ void focal_loss_kernel(
+    const float* __restrict__ log_probs,  // [N, C]
+    const long* __restrict__ targets,      // [N]
+    float* __restrict__ losses,            // [N]
+    int N, int C,
+    float alpha, float gamma)
+{
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    
+    if (idx < N) {
+        int target_class = targets[idx];
+        float log_pt = log_probs[idx * C + target_class];
+        float pt = expf(log_pt);
+        float focal_weight = powf(1.0f - pt, gamma);
+        losses[idx] = -alpha * focal_weight * log_pt;
+    }
+}
+
+__global__ void reduce_loss_kernel(
+    const float* __restrict__ losses,
+    float* __restrict__ output,
+    int N)
+{
+    extern __shared__ float sdata[];
+    
+    int tid = threadIdx.x;
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    
+    float sum = (idx < N) ? losses[idx] : 0.0f;
+    sdata[tid] = sum;
+    __syncthreads();
+    
+    for (int stride = blockDim.x / 2; stride > 0; stride >>= 1) {
+        if (tid < stride) {
+            sdata[tid] += sdata[tid + stride];
+        }
+        __syncthreads();
+    }
+    
+    if (tid == 0) {
+        atomicAdd(output, sdata[0] / N);
+    }
+}
+
+torch::Tensor focal_loss_forward(
+    torch::Tensor log_probs,
+    torch::Tensor targets,
+    double alpha,
+    double gamma)
+{
+    TORCH_CHECK(log_probs.is_cuda(), "log_probs must be CUDA");
+    TORCH_CHECK(targets.is_cuda(), "targets must be CUDA");
+    TORCH_CHECK(log_probs.dim() == 2, "log_probs must be [N, C]");
+    TORCH_CHECK(targets.dim() == 1, "targets must be [N]");
+    TORCH_CHECK(log_probs.scalar_type() == torch::kFloat32, "log_probs must be float32");
+    TORCH_CHECK(targets.scalar_type() == torch::kInt64, "targets must be int64");
+    
+    auto log_probs_contig = log_probs.contiguous();
+    auto targets_contig = targets.contiguous();
+    
+    int N = log_probs_contig.size(0);
+    int C = log_probs_contig.size(1);
+    
+    // Step 1: Compute per-sample losses
+    auto losses = torch::empty({N}, log_probs.options());
+    
+    int threads = 256;
+    int blocks = (N + threads - 1) / threads;
+    
+    focal_loss_kernel<<<blocks, threads>>>(
+        log_probs_contig.data_ptr<float>(),
+        targets_contig.data_ptr<long>(),
+        losses.data_ptr<float>(),
+        N, C,
+        static_cast<float>(alpha),
+        static_cast<float>(gamma)
+    );
+    
+    // Step 2: Reduce to mean
+    auto output = torch::zeros({1}, log_probs.options());
+    size_t shared = threads * sizeof(float);
+    
+    reduce_loss_kernel<<<blocks, threads, shared>>>(
+        losses.data_ptr<float>(),
+        output.data_ptr<float>(),
+        N
+    );
+    
+    return output;
+}
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
     m.def("gelu_forward", &gelu_forward, "GELU forward (CUDA)");
     m.def("swish_forward", &swish_forward, "Swish forward (CUDA)");
     m.def("layernorm_forward", &layernorm_forward, "LayerNorm forward (CUDA)");
     m.def("fused_ln_gelu_forward", &fused_ln_gelu_forward, "Fused LayerNorm + GELU forward (CUDA)");
+    
+    // ADD THIS LINE:
+    m.def("focal_loss_forward", &focal_loss_forward, "Focal Loss forward (CUDA)");
 }

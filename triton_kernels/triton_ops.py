@@ -152,3 +152,86 @@ def triton_fused_ln_gelu(x, gamma, beta, eps=1e-5):
     )
 
     return y
+
+# -------------------- Focal Loss --------------------
+@triton.jit
+def focal_loss_kernel(
+    LogProbs, Targets, Losses,
+    N: tl.constexpr, C: tl.constexpr,
+    alpha: tl.constexpr, gamma: tl.constexpr,
+    BLOCK: tl.constexpr):
+    
+    pid = tl.program_id(0)
+    idx = pid * BLOCK + tl.arange(0, BLOCK)
+    mask = idx < N
+    
+    # Load target class for each sample
+    target = tl.load(Targets + idx, mask=mask, other=0)
+    
+    # Load log probability of the target class
+    # log_probs is [N, C], we need log_probs[idx, target]
+    offset = idx * C + target
+    log_pt = tl.load(LogProbs + offset, mask=mask, other=0.0)
+    
+    # Convert to probability: pt = exp(log_pt)
+    pt = tl.exp(log_pt)
+    
+    # Focal loss: -alpha * (1 - pt)^gamma * log_pt
+    focal_weight = tl.math.pow(1.0 - pt, gamma)
+    loss = -alpha * focal_weight * log_pt
+    
+    tl.store(Losses + idx, loss, mask=mask)
+
+
+def triton_focal_loss(log_probs: torch.Tensor, 
+                      targets: torch.Tensor,
+                      alpha: float = 0.25,
+                      gamma: float = 2.0):
+    """
+    Focal Loss using Triton
+    
+    Args:
+        log_probs: [N, C] tensor of log probabilities (from log_softmax)
+        targets: [N] tensor of target class indices
+        alpha: weighting factor (default 0.25)
+        gamma: focusing parameter (default 2.0)
+    
+    Returns:
+        Scalar loss value (mean over batch)
+    """
+    N, C = log_probs.shape
+    
+    # Allocate output
+    losses = torch.empty(N, device=log_probs.device, dtype=log_probs.dtype)
+    
+    BLOCK = 256
+    grid = lambda meta: (triton.cdiv(N, BLOCK),)
+    
+    focal_loss_kernel[grid](
+        log_probs, targets, losses,
+        N, C, alpha, gamma,
+        BLOCK=BLOCK
+    )
+    
+    # Return mean loss
+    return losses.mean()
+
+# Focal Loss
+@triton.jit
+def focal_loss_kernel(LogProbs, Targets, Losses, N: tl.constexpr, C: tl.constexpr, 
+                      alpha: tl.constexpr, gamma: tl.constexpr, BLOCK: tl.constexpr):
+    pid = tl.program_id(0)
+    idx = pid * BLOCK + tl.arange(0, BLOCK)
+    mask = idx < N
+    target = tl.load(Targets + idx, mask=mask, other=0)
+    offset = idx * C + target
+    log_pt = tl.load(LogProbs + offset, mask=mask, other=0.0)
+    pt = tl.exp(log_pt)
+    
+    # Use repeated multiplication instead of pow for (1-pt)^gamma
+    # For gamma=2.0: (1-pt)^2 = (1-pt) * (1-pt)
+    one_minus_pt = 1.0 - pt
+    focal_weight = one_minus_pt * one_minus_pt  # gamma=2.0
+    
+    loss = -alpha * focal_weight * log_pt
+    tl.store(Losses + idx, loss, mask=mask)
