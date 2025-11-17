@@ -26,9 +26,6 @@ profiling/*.csv
 profiling/*.json
 profiling/*.xlsx
 
-# Plot images (can be regenerated)
-plots/*.png
-
 # Triton cache
 .triton/
 

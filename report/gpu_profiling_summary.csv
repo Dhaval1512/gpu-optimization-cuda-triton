@@ -1,0 +1,2 @@
+Total_Kernels_Profiled,SM_Workload_Imbalance_%,Average_Occupancy_%,Average_Compute_Throughput_%,Average_Memory_Throughput_%,Total_Profile_Duration_sec,GPU_Active_Time_%
+1169,5.71,65,45.5,88.2,2.45,75.3

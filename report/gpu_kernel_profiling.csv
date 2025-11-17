@@ -1,0 +1,7 @@
+Operation,Duration_ms,Compute_Throughput_%,Memory_Throughput_%,Occupancy_%,Register_Usage,Block_Size,Grid_Size,SM_Efficiency_%,Warp_Execution_Efficiency_%
+GELU (vectorized_elementwise),0.02,38,87,64,32,128,8192,95.29,99.82
+Swish,0.018,35,85,62,32,128,8192,94.5,99.7
+LayerNorm,0.045,42,89,68,48,256,4096,96.15,99.85
+Conv2D (cuDNN - volta_scudnn),0.082,42,89,58,64,128,16384,94.29,99.75
+Conv2D (cuDNN - ampere_scudnn),0.095,71,91,72,72,128,32768,97.5,99.9
+Fused LN+GELU,0.052,45,88,66,52,256,4096,95.8,99.8
