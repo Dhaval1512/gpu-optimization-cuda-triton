@@ -64,3 +64,4 @@ eggs/
 .eggs/
 sdist/
 *.egg-info/
+.vscode/
