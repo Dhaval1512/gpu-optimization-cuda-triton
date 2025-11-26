@@ -1,0 +1,5 @@
+Metric,CUDA,Triton
+Time (ms),0.245,0.312
+Memory Usage (MB),12.50,11.80
+Inference Speed (samples/sec),4096.3,3205.1
+GPU Efficiency (%),87.2,82.5

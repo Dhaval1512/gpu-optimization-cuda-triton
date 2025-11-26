@@ -1,0 +1,5 @@
+Fusion,Operations,Chart_File,Type
+Fusion 0,LN + GELU,fusion0_kernel_performance.png,Kernel-level
+Fusion 1,GELU + Swish,fusion1_cnn_inference.png,CNN Inference
+Fusion 2,LN + Swish + Dropout,fusion2_cnn_inference.png,CNN Inference
+Fusion 3,LN + GELU + Swish,fusion3_cnn_inference.png,CNN Inference
