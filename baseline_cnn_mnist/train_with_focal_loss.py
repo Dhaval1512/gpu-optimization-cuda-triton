@@ -6,7 +6,7 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
-from baseline_cnn_mnist.model import MNIST_CNN
+from baseline_cnn_mnist.model_pytorch import MNIST_CNN
 from baseline_cnn_mnist.losses_cuda import focal_loss_cuda
 from baseline_cnn_mnist.losses_triton import focal_loss_triton
 

@@ -412,3 +412,97 @@ def triton_fused_ln_swish_dropout(x, gamma, beta, dropout_p=0.1, training=True, 
     )
     
     return y, mask
+
+@triton.jit
+def fused_ln_gelu_swish_kernel(
+    X, Y, Gamma, Beta,
+    M, N,  # M = batch size, N = feature dimension
+    eps: tl.constexpr,
+    BLOCK_SIZE: tl.constexpr):
+    """
+    Fused LayerNorm + GELU + Swish kernel
+    
+    Computes: output = GELU(LN(x)) + Swish(LN(x))
+    where LN(x) = (x - mean) / sqrt(var + eps) * gamma + beta
+    """
+    # Get row index (each program handles one row)
+    row_idx = tl.program_id(0)
+    
+    # Pointers to current row
+    X_row = X + row_idx * N
+    Y_row = Y + row_idx * N
+    
+    # Column offsets
+    cols = tl.arange(0, BLOCK_SIZE)
+    mask = cols < N
+    
+    # Load input data
+    x = tl.load(X_row + cols, mask=mask, other=0.0)
+    
+    # === STEP 1: LayerNorm - Compute mean ===
+    mean = tl.sum(x, axis=0) / N
+    
+    # === STEP 2: LayerNorm - Compute variance ===
+    x_centered = x - mean
+    variance = tl.sum(x_centered * x_centered, axis=0) / N
+    
+    # === STEP 3: LayerNorm - Normalize ===
+    rstd = 1.0 / tl.sqrt(variance + eps)
+    x_normalized = x_centered * rstd
+    
+    # === STEP 4: LayerNorm - Apply scale and shift ===
+    gamma = tl.load(Gamma + cols, mask=mask, other=1.0)
+    beta = tl.load(Beta + cols, mask=mask, other=0.0)
+    x_ln = x_normalized * gamma + beta
+    
+    # === STEP 5: GELU activation ===
+    # GELU(x) = 0.5 * x * (1 + erf(x / sqrt(2)))
+    inv_sqrt2 = 0.70710678118
+    gelu_out = 0.5 * x_ln * (1.0 + tl.erf(x_ln * inv_sqrt2))
+    
+    # === STEP 6: Swish activation ===
+    # Swish(x) = x * sigmoid(x) = x / (1 + exp(-x))
+    swish_out = x_ln / (1.0 + tl.exp(-x_ln))
+    
+    # === STEP 7: Combine activations ===
+    output = gelu_out + swish_out
+    
+    # Store result
+    tl.store(Y_row + cols, output, mask=mask)
+
+
+def triton_fused_ln_gelu_swish(x, gamma, beta, eps=1e-5):
+    """
+    Fused LayerNorm + GELU + Swish using Triton
+    
+    Args:
+        x: Input tensor [M, N] where M=batch, N=features
+        gamma: Scale parameter [N]
+        beta: Shift parameter [N]
+        eps: Epsilon for numerical stability
+    
+    Returns:
+        output: Fused output [M, N]
+    """
+    assert x.dim() == 2, "Input must be 2D [batch, features]"
+    assert gamma.shape[0] == x.shape[1], "Gamma must match feature dimension"
+    assert beta.shape[0] == x.shape[1], "Beta must match feature dimension"
+    
+    M, N = x.shape  # M = batch size, N = feature dimension
+    
+    # Allocate output tensor
+    y = torch.empty_like(x)
+    
+    # Launch kernel (one program per row)
+    BLOCK_SIZE = triton.next_power_of_2(N)
+    grid = lambda meta: (M,)
+    
+    fused_ln_gelu_swish_kernel[grid](
+        x, y, gamma, beta,
+        M, N,
+        eps=eps,
+        BLOCK_SIZE=BLOCK_SIZE,
+        num_warps=4
+    )
+    
+    return y

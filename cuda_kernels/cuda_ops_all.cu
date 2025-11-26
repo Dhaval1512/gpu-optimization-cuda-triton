@@ -436,6 +436,49 @@ std::tuple<torch::Tensor, torch::Tensor> cuda_fused_ln_swish_dropout(
     return std::make_tuple(y, mask);
 }
 
+// Forward declaration from fused_ln_gelu_swish.cu
+extern "C" __global__ void fused_ln_gelu_swish_kernel(
+    const float* __restrict__ x,
+    float* __restrict__ y,
+    const float* __restrict__ gamma,
+    const float* __restrict__ beta,
+    int M, int N,
+    float eps);
+
+torch::Tensor cuda_fused_ln_gelu_swish(
+    torch::Tensor x,
+    torch::Tensor gamma,
+    torch::Tensor beta,
+    float eps)
+{
+    TORCH_CHECK(x.is_cuda(), "x must be CUDA tensor");
+    TORCH_CHECK(x.dim() == 2, "x must be 2D [batch, features]");
+    TORCH_CHECK(gamma.size(0) == x.size(1), "gamma must match feature dimension");
+    TORCH_CHECK(beta.size(0) == x.size(1), "beta must match feature dimension");
+    
+    auto x_contig = x.contiguous();
+    int M = x_contig.size(0);  // Batch size
+    int N = x_contig.size(1);  // Feature dimension
+    
+    auto y = torch::empty_like(x_contig);
+    
+    // Launch one block per row
+    int threads = min(1024, (N + 31) / 32 * 32);
+    int blocks = M;
+    size_t shared_mem = (threads / 32) * sizeof(float);
+    
+    fused_ln_gelu_swish_kernel<<<blocks, threads, shared_mem>>>(
+        x_contig.data_ptr<float>(),
+        y.data_ptr<float>(),
+        gamma.data_ptr<float>(),
+        beta.data_ptr<float>(),
+        M, N,
+        eps
+    );
+    
+    return y;
+}
+
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
     m.def("gelu_forward", &gelu_forward, "GELU forward (CUDA)");
     m.def("swish_forward", &swish_forward, "Swish forward (CUDA)");
@@ -444,4 +487,5 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
     m.def("cuda_fused_gelu_swish", &cuda_fused_gelu_swish, "Fused GELU+Swish (CUDA)");
     m.def("focal_loss_forward", &focal_loss_forward, "Focal Loss forward (CUDA)");
     m.def("cuda_fused_ln_swish_dropout", &cuda_fused_ln_swish_dropout, "Fused LayerNorm+Swish+Dropout (CUDA)");
+    m.def("cuda_fused_ln_gelu_swish", &cuda_fused_ln_gelu_swish, "Fused LayerNorm+GELU+Swish (CUDA)");
 }
