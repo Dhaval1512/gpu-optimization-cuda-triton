@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from model_fused_swiss_gelu import FusedCNN, count_parameters
+from fused_models.model_fusion_swiss_gelu import FusedCNN, count_parameters
 
 def train_epoch(model, device, train_loader, optimizer, epoch):
     """Train for one epoch"""

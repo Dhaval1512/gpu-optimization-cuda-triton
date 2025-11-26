@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CNN inference benchmark for Fusion 2"""
+"""CNN inference benchmark for Fusion 3: LayerNorm + GELU + Swish"""
 
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from fused_models.model_fusion_ln_swiss_dropout import Fusion2CNN
+from fused_models.model_fused_ln_swiss_gelu import Fusion3CNN
 import csv
 import statistics as stats
 
@@ -53,7 +53,8 @@ def benchmark_model(model, data_loader, warmup=50, iters=200):
 
 def main():
     print("\n" + "="*80)
-    print("  FUSION 2 CNN INFERENCE BENCHMARK ON MNIST")
+    print("  FUSION 3 CNN INFERENCE BENCHMARK ON MNIST")
+    print("  LayerNorm + GELU + Swish")
     print("="*80 + "\n")
     
     # Load MNIST
@@ -77,40 +78,40 @@ def main():
         
         # PyTorch unfused
         print("\n1. PyTorch (Unfused)")
-        model_unfused = Fusion2CNN(use_fusion=False).cuda().eval()
+        model_unfused = Fusion3CNN(use_fusion=False).cuda().eval()
         mean_unfused, std_unfused = benchmark_model(model_unfused, test_loader)
         print(f"   Time: {mean_unfused:>8.4f} ± {std_unfused:>6.4f} ms/batch")
-        results.append(("fusion2_cnn", "pytorch_unfused", batch_size, mean_unfused, std_unfused))
+        results.append(("fusion3_cnn", "pytorch_unfused", batch_size, mean_unfused, std_unfused))
         
         # Triton fused
         print("\n2. Triton (Fused)")
-        model_triton = Fusion2CNN(use_fusion=True, backend='triton').cuda().eval()
+        model_triton = Fusion3CNN(use_fusion=True, backend='triton').cuda().eval()
         mean_triton, std_triton = benchmark_model(model_triton, test_loader)
         speedup_triton = mean_unfused / mean_triton
         print(f"   Time: {mean_triton:>8.4f} ± {std_triton:>6.4f} ms/batch")
         print(f"   Speedup: {speedup_triton:.2f}×")
-        results.append(("fusion2_cnn", "triton_fused", batch_size, mean_triton, std_triton))
+        results.append(("fusion3_cnn", "triton_fused", batch_size, mean_triton, std_triton))
         
         # CUDA fused
         print("\n3. CUDA (Fused)")
-        model_cuda = Fusion2CNN(use_fusion=True, backend='cuda').cuda().eval()
+        model_cuda = Fusion3CNN(use_fusion=True, backend='cuda').cuda().eval()
         mean_cuda, std_cuda = benchmark_model(model_cuda, test_loader)
         speedup_cuda = mean_unfused / mean_cuda
         print(f"   Time: {mean_cuda:>8.4f} ± {std_cuda:>6.4f} ms/batch")
         print(f"   Speedup: {speedup_cuda:.2f}×")
-        results.append(("fusion2_cnn", "cuda_fused", batch_size, mean_cuda, std_cuda))
+        results.append(("fusion3_cnn", "cuda_fused", batch_size, mean_cuda, std_cuda))
         
         print(f"\nBest speedup: {max(speedup_triton, speedup_cuda):.2f}×\n")
     
     # Save results
     os.makedirs("report", exist_ok=True)
-    with open("report/fusion2_cnn_inference.csv", "w", newline='') as f:
+    with open("report/fusion3_cnn_inference.csv", "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(["operation", "implementation", "batch_size", "mean_ms", "std_ms"])
         writer.writerows(results)
     
     print("="*80)
-    print("✅ Results saved to: report/fusion2_cnn_inference.csv")
+    print("✅ Results saved to: report/fusion_ln_swiss_gelu_cnn_inference.csv")
     print("="*80 + "\n")
     
     # Summary

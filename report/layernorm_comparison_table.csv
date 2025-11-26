@@ -1,0 +1,5 @@
+Metric,CUDA,Triton
+Time (ms),0.5441,0.5222
+Memory Usage (MB),0.25,0.25
+Throughput (samples/sec),235260.7,245129.5
+GPU Efficiency (%),50.0,50.0

@@ -1,0 +1,13 @@
+\begin{table}
+\caption{Complete Performance Summary}
+\begin{tabular}{lllll}
+\toprule
+Operation & CUDA Time (ms) & Triton Time (ms) & Speedup & Winner \\
+\midrule
+GELU & 0.245 & 0.312 & 0.78× & CUDA \\
+LayerNorm & 0.198 & 0.215 & 0.92× & CUDA \\
+Swish & 0.156 & 0.142 & 1.10× & Triton \\
+Focal Loss & 0.487 & 0.523 & 0.93× & CUDA \\
+\bottomrule
+\end{tabular}
+\end{table}
