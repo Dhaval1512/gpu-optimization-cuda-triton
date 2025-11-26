@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from fused_models.model_fused_ln_swiss_dropout import Fusion2CNN
+from fused_models.model_fusion_ln_swiss_dropout import Fusion2CNN
 import csv
 import statistics as stats
 
