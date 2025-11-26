@@ -358,12 +358,90 @@ torch::Tensor focal_loss_forward(
     return output;
 }
 
+// Forward declaration from fused_gelu_swish.cu
+extern "C" __global__ void fused_gelu_swish_kernel(
+    const float* __restrict__ x,
+    float* __restrict__ y,
+    int N);
+
+torch::Tensor cuda_fused_gelu_swish(torch::Tensor x) {
+    TORCH_CHECK(x.is_cuda(), "x must be CUDA tensor");
+    TORCH_CHECK(x.scalar_type() == torch::kFloat32, "x must be float32");
+    
+    auto x_contig = x.contiguous();
+    auto y = torch::empty_like(x_contig);
+    
+    int N = x_contig.numel();
+    int threads = 256;
+    int blocks = (N + threads - 1) / threads;
+    
+    fused_gelu_swish_kernel<<<blocks, threads>>>(
+        x_contig.data_ptr<float>(),
+        y.data_ptr<float>(),
+        N
+    );
+    
+    return y.view_as(x);
+}
+
+// Forward declaration from fused_ln_swish_dropout.cu
+extern "C" __global__ void fused_ln_swish_dropout_kernel(
+    const float* __restrict__ x,
+    float* __restrict__ y,
+    unsigned char* __restrict__ mask,
+    const float* __restrict__ gamma,
+    const float* __restrict__ beta,
+    int M, int N,
+    float dropout_p,
+    float eps,
+    unsigned long long seed);
+
+std::tuple<torch::Tensor, torch::Tensor> cuda_fused_ln_swish_dropout(
+    torch::Tensor x,
+    torch::Tensor gamma,
+    torch::Tensor beta,
+    float dropout_p,
+    int64_t seed,
+    float eps)
+{
+    TORCH_CHECK(x.is_cuda(), "x must be CUDA tensor");
+    TORCH_CHECK(x.dim() == 2, "x must be 2D [batch, features]");
+    TORCH_CHECK(gamma.size(0) == x.size(1), "gamma must match feature dimension");
+    TORCH_CHECK(beta.size(0) == x.size(1), "beta must match feature dimension");
+    
+    auto x_contig = x.contiguous();
+    int M = x_contig.size(0);  // Batch size
+    int N = x_contig.size(1);  // Feature dimension
+    
+    auto y = torch::empty_like(x_contig);
+    auto mask = torch::empty({M, N}, torch::dtype(torch::kUInt8).device(x.device()));
+    
+    // Launch one block per row, with enough threads to cover features
+    int threads = min(1024, (N + 31) / 32 * 32);  // Round up to multiple of 32
+    int blocks = M;
+    size_t shared_mem = (threads / 32) * sizeof(float);  // For reduction
+    
+    fused_ln_swish_dropout_kernel<<<blocks, threads, shared_mem>>>(
+        x_contig.data_ptr<float>(),
+        y.data_ptr<float>(),
+        mask.data_ptr<unsigned char>(),
+        gamma.data_ptr<float>(),
+        beta.data_ptr<float>(),
+        M, N,
+        dropout_p,
+        eps,
+        static_cast<unsigned long long>(seed)
+    );
+    
+    return std::make_tuple(y, mask);
+}
+
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
     m.def("gelu_forward", &gelu_forward, "GELU forward (CUDA)");
     m.def("swish_forward", &swish_forward, "Swish forward (CUDA)");
     m.def("layernorm_forward", &layernorm_forward, "LayerNorm forward (CUDA)");
     m.def("fused_ln_gelu_forward", &fused_ln_gelu_forward, "Fused LayerNorm + GELU forward (CUDA)");
-    
-    // ADD THIS LINE:
+    m.def("cuda_fused_gelu_swish", &cuda_fused_gelu_swish, "Fused GELU+Swish (CUDA)");
     m.def("focal_loss_forward", &focal_loss_forward, "Focal Loss forward (CUDA)");
+    m.def("cuda_fused_ln_swish_dropout", &cuda_fused_ln_swish_dropout, "Fused LayerNorm+Swish+Dropout (CUDA)");
 }

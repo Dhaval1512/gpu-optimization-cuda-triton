@@ -7,7 +7,9 @@ setup(
     ext_modules=[
         CUDAExtension(
             name="cuda_ops",
-            sources=["cuda_kernels/cuda_ops_all.cu"],
+            sources=["cuda_kernels/cuda_ops_all.cu", 
+                     "cuda_kernels/fused_gelu_swish.cu", 
+                     "cuda_kernels/fused_ln_swish_dropout.cu"],
             extra_compile_args={
                 'cxx': [],
                 'nvcc': [
