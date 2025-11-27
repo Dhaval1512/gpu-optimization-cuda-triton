@@ -1,0 +1,169 @@
+==PROF== Connected to process 37532 (/usr/bin/python3.12)
+
+================================================================================
+FUSION 3 (LN + GELU + Swish) - PROFILING MODE
+================================================================================
+
+✅ Imported cuda_ops extension
+
+✅ Found: cuda_fused_ln_gelu_swish
+
+================================================================================
+Running 10 iterations for Nsight profiling
+================================================================================
+
+Device: cuda
+GPU: NVIDIA GeForce RTX 4060 Laptop GPU
+
+
+📊 Shape: XX-Large [512 x 1024]
+------------------------------------------------------------
+   Input: torch.Size([512, 1024])
+   Gamma: torch.Size([1024])
+   Beta: torch.Size([1024])
+   Epsilon: 1e-05
+
+🔥 Warmup (3 iterations)...
+✅ Warmup complete
+
+⚡ Profiling cuda_fused_ln_gelu_swish (10 iterations)...
+   Output shape: torch.Size([512, 1024])
+   Output mean: 0.4891
+   Output std: 1.1466
+   ✅ Complete
+
+📊 Shape: X-Large [256 x 512]
+------------------------------------------------------------
+   Input: torch.Size([256, 512])
+   Gamma: torch.Size([512])
+   Beta: torch.Size([512])
+   Epsilon: 1e-05
+
+🔥 Warmup (3 iterations)...
+✅ Warmup complete
+
+⚡ Profiling cuda_fused_ln_gelu_swish (10 iterations)...
+   Output shape: torch.Size([256, 512])
+   Output mean: 0.4890
+   Output std: 1.1443
+   ✅ Complete
+
+================================================================================
+✅ FUSION 3 PROFILING COMPLETE
+================================================================================
+
+💡 Nsight Compute captured metrics for your 2.94× speedup!
+   Check profiling_results/ for:
+   - nsight_fusion3_correct.ncu-rep (full profile)
+   - nsight_fusion3_correct_metrics.csv (extracted metrics)
+
+==PROF== Disconnected from process 37532
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","37532","python3.12","127.0.0.1","void at::<unnamed>::distribution_elementwise_grid_stride_kernel<float, 4, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void at::<unnamed>::distribution_nullary_kernel<float, float, float4, at::CUDAGeneratorImpl *, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T4, const T5 &, T6)::[lambda(int, float) (instance 1)]>(long, at::PhiloxCudaState, T3, T4)","1","7","(256, 1, 1)","(144, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","0.43"
+"0","37532","python3.12","127.0.0.1","void at::<unnamed>::distribution_elementwise_grid_stride_kernel<float, 4, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void at::<unnamed>::distribution_nullary_kernel<float, float, float4, at::CUDAGeneratorImpl *, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T4, const T5 &, T6)::[lambda(int, float) (instance 1)]>(long, at::PhiloxCudaState, T3, T4)","1","7","(256, 1, 1)","(144, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10592"
+"0","37532","python3.12","127.0.0.1","void at::<unnamed>::distribution_elementwise_grid_stride_kernel<float, 4, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void at::<unnamed>::distribution_nullary_kernel<float, float, float4, at::CUDAGeneratorImpl *, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T4, const T5 &, T6)::[lambda(int, float) (instance 1)]>(long, at::PhiloxCudaState, T3, T4)","1","7","(256, 1, 1)","(144, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","62.51"
+"1","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(2, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","0.80"
+"1","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(2, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","1600"
+"1","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(2, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","0.06"
+"2","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(2, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","0.77"
+"2","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(2, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","1728"
+"2","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(2, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","0.06"
+"3","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.08"
+"3","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54944"
+"3","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.70"
+"4","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.11"
+"4","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54784"
+"4","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.81"
+"5","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.10"
+"5","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54816"
+"5","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.79"
+"6","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.05"
+"6","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","55008"
+"6","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.65"
+"7","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::MeanOps<float, float, float, float>, unsigned int, float, 4>>(T3)","1","7","(512, 1, 1)","(1, 64, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","60.97"
+"7","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::MeanOps<float, float, float, float>, unsigned int, float, 4>>(T3)","1","7","(512, 1, 1)","(1, 64, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","13824"
+"7","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::MeanOps<float, float, float, float>, unsigned int, float, 4>>(T3)","1","7","(512, 1, 1)","(1, 64, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","11.14"
+"8","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::WelfordOps<float, float, int, __4::pair<float, float>>, unsigned int, float, 2>>(T3)","1","7","(512, 1, 1)","(1, 64, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","50.43"
+"8","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::WelfordOps<float, float, int, __4::pair<float, float>>, unsigned int, float, 2>>(T3)","1","7","(512, 1, 1)","(1, 64, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","16768"
+"8","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::WelfordOps<float, float, int, __4::pair<float, float>>, unsigned int, float, 2>>(T3)","1","7","(512, 1, 1)","(1, 64, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","24.25"
+"9","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.03"
+"9","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","55072"
+"9","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.59"
+"10","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.10"
+"10","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54816"
+"10","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.78"
+"11","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.10"
+"11","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54816"
+"11","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.78"
+"12","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.07"
+"12","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54944"
+"12","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.70"
+"13","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.11"
+"13","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54784"
+"13","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.81"
+"14","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.10"
+"14","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54816"
+"14","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.80"
+"15","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.06"
+"15","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54944"
+"15","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.69"
+"16","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.07"
+"16","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54944"
+"16","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.69"
+"17","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","15.10"
+"17","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","54848"
+"17","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(1024, 1, 1)","(512, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","40.78"
+"18","37532","python3.12","127.0.0.1","void at::<unnamed>::distribution_elementwise_grid_stride_kernel<float, 4, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void at::<unnamed>::distribution_nullary_kernel<float, float, float4, at::CUDAGeneratorImpl *, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T4, const T5 &, T6)::[lambda(int, float) (instance 1)]>(long, at::PhiloxCudaState, T3, T4)","1","7","(256, 1, 1)","(144, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","0.82"
+"18","37532","python3.12","127.0.0.1","void at::<unnamed>::distribution_elementwise_grid_stride_kernel<float, 4, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void at::<unnamed>::distribution_nullary_kernel<float, float, float4, at::CUDAGeneratorImpl *, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T4, const T5 &, T6)::[lambda(int, float) (instance 1)]>(long, at::PhiloxCudaState, T3, T4)","1","7","(256, 1, 1)","(144, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","4896"
+"18","37532","python3.12","127.0.0.1","void at::<unnamed>::distribution_elementwise_grid_stride_kernel<float, 4, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void at::<unnamed>::distribution_nullary_kernel<float, float, float4, at::CUDAGeneratorImpl *, void templates::normal_and_transform<float, float, at::CUDAGeneratorImpl *, void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T3, T4)::[lambda(curandStatePhilox4_32_10 *) (instance 2)], void templates::normal_kernel<at::CUDAGeneratorImpl *>(const at::TensorBase &, double, double, T1)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 2)]::operator ()() const::[lambda(float) (instance 1)]>(at::TensorIteratorBase &, T4, const T5 &, T6)::[lambda(int, float) (instance 1)]>(long, at::PhiloxCudaState, T3, T4)","1","7","(256, 1, 1)","(144, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","47.99"
+"19","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(1, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","0.80"
+"19","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(1, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","1632"
+"19","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(1, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","0.03"
+"20","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(1, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","0.80"
+"20","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(1, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","1632"
+"20","37532","python3.12","127.0.0.1","void at::vectorized_elementwise_kernel<4, at::FillFunctor<float>, std::array<char *, 1>>(int, T2, T3)","1","7","(128, 1, 1)","(1, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","0.03"
+"21","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.52"
+"21","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10816"
+"21","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","52.49"
+"22","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.57"
+"22","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10848"
+"22","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","52.35"
+"23","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.52"
+"23","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10848"
+"23","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","52.39"
+"24","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.46"
+"24","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10912"
+"24","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","52.22"
+"25","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::MeanOps<float, float, float, float>, unsigned int, float, 4>>(T3)","1","7","(512, 1, 1)","(1, 16, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","30.91"
+"25","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::MeanOps<float, float, float, float>, unsigned int, float, 4>>(T3)","1","7","(512, 1, 1)","(1, 16, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","7296"
+"25","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::MeanOps<float, float, float, float>, unsigned int, float, 4>>(T3)","1","7","(512, 1, 1)","(1, 16, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","5.44"
+"26","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::WelfordOps<float, float, int, __4::pair<float, float>>, unsigned int, float, 2>>(T3)","1","7","(512, 1, 1)","(1, 16, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","18.66"
+"26","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::WelfordOps<float, float, int, __4::pair<float, float>>, unsigned int, float, 2>>(T3)","1","7","(512, 1, 1)","(1, 16, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","12288"
+"26","37532","python3.12","127.0.0.1","void at::reduce_kernel<512, 1, at::ReduceOp<float, at::WelfordOps<float, float, int, __4::pair<float, float>>, unsigned int, float, 2>>(T3)","1","7","(512, 1, 1)","(1, 16, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","8.37"
+"27","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.23"
+"27","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","11040"
+"27","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","51.60"
+"28","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.52"
+"28","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10880"
+"28","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","52.36"
+"29","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.40"
+"29","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10912"
+"29","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","51.97"
+"30","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.17"
+"30","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","11040"
+"30","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","51.54"
+"31","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.23"
+"31","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10976"
+"31","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","51.69"
+"32","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.40"
+"32","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10912"
+"32","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","52.19"
+"33","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.40"
+"33","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10912"
+"33","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","52.06"
+"34","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.34"
+"34","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10944"
+"34","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","51.86"
+"35","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","19.29"
+"35","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","gpu__time_duration.avg","ns","10944"
+"35","37532","python3.12","127.0.0.1","fused_ln_gelu_swish_kernel","1","7","(512, 1, 1)","(256, 1, 1)","0","8.9","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","51.92"
