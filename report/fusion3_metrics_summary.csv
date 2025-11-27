@@ -1,0 +1,4 @@
+Metric,Value,Unit,Samples
+dram__throughput.avg.pct_of_peak_sustained_elapsed,17.23576923076923,%,26
+gpu__time_duration.avg,32904.61538461538,ns,26
+sm__throughput.avg.pct_of_peak_sustained_elapsed,46.39269230769231,%,26

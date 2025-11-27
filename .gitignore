@@ -65,3 +65,7 @@ eggs/
 sdist/
 *.egg-info/
 .vscode/
+
+# Ignore Nsight Compute report files
+profiling_results/*.ncu-rep
+*.ncu-rep
